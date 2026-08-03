@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assani's Digital Library</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+
+    <div class="container">
+
+
+        
+        <div class="header">
+            <h1>Assani's Digital Library</h1>
+            <button class="btn" id="openModalBtn">Add Book</button>
+
+            <dialog id="myModal">
+              <form method="dialog" id="bookForm" class="modal-form">
+                <h2>Add a New Book</h2>
+
+                <label>
+                  Book name
+                  <input type="text" name="title" required placeholder="Enter book title">
+                </label>
+
+                <label>
+                  Author
+                  <input type="text" name="author" required placeholder="Enter author name">
+                </label>
+
+                <label>
+                  Pages
+                  <input type="number" name="pages" required min="1" placeholder="Enter page count">
+                </label>
+
+                <div class="modal-actions">
+                  <button type="button" id="closeModalBtn" class="secondary-btn">Cancel</button>
+                  <button type="submit" class="btn">Add Book</button>
+                </div>
+              </form>
+            </dialog>
+        </div>
+
+        
+       <div class="books-container">
+
+       <div class="book-box">
+        <h2>Count of monte carlo</h2>
+        <p>Alexandar dumas</p>
+        <p>600</p>
+
+        <div class="btn-container">
+           <button class="remove-btn">Remove</button>
+           <button class="toggle-btn">Read</button>
+        </div>
+       </div>
+
+       <div class="book-box">
+        <h2>Count of monte carlo</h2>
+        <p>Alexandar dumas</p>
+        <p>600</p>
+        
+
+        <div class="btn-container">
+            <button class="remove-btn">Remove</button>
+           <button class="toggle-btn">Read</button>
+        </div>
+        
+       </div>
+
+       <div class="book-box">
+        <h2>Count of monte carlo</h2>
+        <p>Alexandar dumas</p>
+        <p>600</p>
+        <div class="btn-container">
+           <button class="remove-btn">Remove</button>
+           <button class="toggle-btn">Read</button>
+        </div>
+
+    </div>
+
+       
+        
+       </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
