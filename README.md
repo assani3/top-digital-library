@@ -18,9 +18,10 @@ This project extends the Book example into a mini-library application. The goal 
 
 - The UI is built with `HTML`, `CSS`, and `JavaScript`
 - A modal form lets users enter the book title, author, and page count
-- When submitted, JavaScript creates a new book card and adds it to the library display
+- The `Library` class creates and stores `Book` instances in an array
+- The UI renders book cards from the library's collection after changes
 - Each book card includes a `Remove` button and a `Read` toggle button
-- The `Read` button updates the card state and prevents repeated toggles
+- The read status belongs to each `Book` and can be toggled between read and unread
 
 ## Installation
 
@@ -32,29 +33,26 @@ This project extends the Book example into a mini-library application. The goal 
 
 - Click the `Add Book` button to open the modal
 - Enter the book title, author name, and page count
-- Submit the form to add the book to the `.books-container`
-- Click `Remove` to delete the book card
-- Click `Read` to mark the book as read
+- Submit the form to add a book to the library
+- Click `Remove` to remove a book from the library
+- Click `Read` or `Unread` to toggle that book's status
 
 ## Notes
 
 - The project is intentionally simple and does not persist data between page reloads
-- The underlying data model can be extended with a `Book` constructor and array storage to match the Odin Project assignment more closely
-- A good next step is to add a unique `id` to each book object and use data attributes to associate DOM elements with book data
+- Book IDs are assigned sequentially by the `Library` and remain unique for the current page session
+- Book details are inserted into the page as text, not interpreted as HTML
 
 ## Odin Project Assignment Alignment
 
 This project follows the Odin Project Library lesson goals by:
 
-- Providing a modal form for adding new books
-- Separating book creation logic from DOM rendering logic
+- Using `Book` and `Library` classes to model books and their collection
+- Separating book data and collection management from DOM rendering logic
 - Allowing users to remove books from the library
-- Enabling read status changes for individual books
+- Enabling read status toggles for individual books
 
 ## Future improvements
 
-- Add a `Book` constructor and store books in an array
-- Generate unique `id` values using `crypto.randomUUID()`
-- Re-render the library from the array when books are added or removed
-- Add read status logic to book objects rather than only the card UI
-- Add validation messages or user feedback for form input
+- Persist the library between page reloads
+- Add validation messages or user feedback for invalid form input

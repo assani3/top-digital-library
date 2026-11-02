@@ -1,8 +1,82 @@
+class Book {
+  constructor(id, title, author, pages) {
+    this.id = id;
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.isRead = false;
+  }
+
+  toggleRead() {
+    this.isRead = !this.isRead;
+  }
+}
+
+class Library {
+  constructor() {
+    this.books = [];
+    this.nextId = 1;
+  }
+
+  addBook(title, author, pages) {
+    const book = new Book(this.nextId, title, author, pages);
+    this.nextId += 1;
+    this.books.push(book);
+    return book;
+  }
+
+  findBook(id) {
+    return this.books.find((book) => book.id === id);
+  }
+
+  removeBook(id) {
+    this.books = this.books.filter((book) => book.id !== id);
+  }
+}
+
+const library = new Library();
 const modal = document.getElementById('myModal');
 const openBtn = document.getElementById('openModalBtn');
 const closeBtn = document.getElementById('closeModalBtn');
 const bookForm = document.getElementById('bookForm');
 const booksContainer = document.querySelector('.books-container');
+
+function displayBooks() {
+  booksContainer.replaceChildren();
+
+  library.books.forEach((book) => {
+    const bookBox = document.createElement('div');
+    bookBox.className = 'book-box';
+    bookBox.dataset.bookId = book.id;
+
+    const title = document.createElement('h2');
+    title.textContent = book.title;
+
+    const author = document.createElement('p');
+    author.textContent = book.author;
+
+    const pages = document.createElement('p');
+    pages.textContent = `${book.pages} pages`;
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'btn-container';
+
+    const removeButton = document.createElement('button');
+    removeButton.className = 'remove-btn';
+    removeButton.type = 'button';
+    removeButton.textContent = 'Remove';
+
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toggle-btn';
+    toggleButton.type = 'button';
+    toggleButton.textContent = book.isRead ? 'Read' : 'Unread';
+    toggleButton.setAttribute('aria-pressed', String(book.isRead));
+
+    buttonContainer.append(removeButton, toggleButton);
+    bookBox.append(title, author, pages, buttonContainer);
+    booksContainer.append(bookBox);
+  });
+}
 
 openBtn.addEventListener('click', () => {
   modal.showModal();
@@ -12,27 +86,37 @@ closeBtn.addEventListener('click', () => {
   modal.close();
 });
 
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
+modal.addEventListener('click', (event) => {
+  if (event.target === modal) {
     modal.close();
   }
 });
 
 booksContainer.addEventListener('click', (event) => {
-  const removeBtn = event.target.closest('.remove-btn');
-  if (removeBtn) {
-    const bookBox = removeBtn.closest('.book-box');
-    if (bookBox) {
-      bookBox.remove();
-    }
+  if (!(event.target instanceof Element)) {
     return;
   }
 
-  const toggleBtn = event.target.closest('.toggle-btn');
-  if (toggleBtn) {
-    toggleBtn.textContent = 'Read ✓';
-    toggleBtn.disabled = true;
+  const button = event.target.closest('button');
+  const bookBox = button?.closest('.book-box');
+  if (!button || !bookBox) {
     return;
+  }
+
+  const bookId = Number(bookBox.dataset.bookId);
+
+  if (button.classList.contains('remove-btn')) {
+    library.removeBook(bookId);
+    displayBooks();
+    return;
+  }
+
+  if (button.classList.contains('toggle-btn')) {
+    const book = library.findBook(bookId);
+    if (book) {
+      book.toggleRead();
+      displayBooks();
+    }
   }
 });
 
@@ -41,25 +125,14 @@ bookForm.addEventListener('submit', (event) => {
 
   const title = bookForm.elements.title.value.trim();
   const author = bookForm.elements.author.value.trim();
-  const pages = bookForm.elements.pages.value.trim();
+  const pages = Number(bookForm.elements.pages.value);
 
-  if (!title || !author || !pages) {
+  if (!title || !author || !Number.isInteger(pages) || pages < 1) {
     return;
   }
 
-  const bookBox = document.createElement('div');
-  bookBox.className = 'book-box';
-  bookBox.innerHTML = `
-    <h2>${title}</h2>
-    <p>${author}</p>
-    <p>${pages}</p>
-    <div class="btn-container">
-      <button class="remove-btn" type="button">Remove</button>
-      <button class="toggle-btn" type="button">Read</button>
-    </div>
-  `;
-
-  booksContainer.appendChild(bookBox);
+  library.addBook(title, author, pages);
+  displayBooks();
   modal.close();
   bookForm.reset();
 });
